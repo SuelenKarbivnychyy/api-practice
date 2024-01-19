@@ -88,11 +88,26 @@ def get_event_details(id):
     
 
     event_name = data['name']
-    date = data['dates']['start']['localDate']
-    venues = [data['locale']]
+    date = data['dates']['start']['localDate']    
     image = str(data['images'][1]['url'])
-    description = data['description']
     ticketmaster_link = data['url']
+    
+
+    if not 'classifications' in data.keys():
+        classifications = []
+    else:
+        classifications = data['classifications']
+
+    if not '_embedded' in data:
+        venues = []
+    else:    
+        venues = data['_embedded']['venues']
+
+    if not 'description' in data.keys():
+        description = "Not specified"
+    else:
+        description = data['description']
+    
 
     print(data)
 
@@ -104,7 +119,8 @@ def get_event_details(id):
                            image=image,
                            description=description,
                            event_name=event_name,
-                           ticketmaster_link=ticketmaster_link)
+                           ticketmaster_link=ticketmaster_link,
+                           classifications=classifications)
 
 
 if __name__ == '__main__':
